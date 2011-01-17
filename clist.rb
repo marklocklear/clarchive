@@ -1,3 +1,5 @@
+#Author J. Mark Locklear
+
 require 'csv'
 require 'htmlunit.rb'
  writer = CSV.open('writeClist.csv', 'w')
