@@ -1,8 +1,8 @@
 #Author J. Mark Locklear
-
-require 'csv'
+require 'java'
+require 'rubygems'
 require 'htmlunit.rb'
- writer = CSV.open('writeClist.csv', 'w')
+
  webClient = WebClient.new(BrowserVersion::FIREFOX_3)
  main_page = webClient.getPage("http://raleigh.craigslist.org/")
  main_div = main_page.getElementById("sss")
@@ -27,4 +27,3 @@ require 'htmlunit.rb'
     #puts post_body.asText #gets body
     i+=1
   end
-  writer.close

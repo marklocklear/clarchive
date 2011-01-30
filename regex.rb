@@ -1,5 +1,5 @@
 #Author J. Mark Locklear
-
+require 'rubygems'
 require 'csv'
 require 'htmlunit.rb'
  writer = CSV.open('writeClist.csv', 'w')
@@ -17,14 +17,14 @@ require 'htmlunit.rb'
     html_body = click_post.getByXPath("html/body")
 		#str.partition(sep) → [head, sep, tail]
 		title = title[0].asText
-		phone = post_body.asText.to_s =~ /(t.he)/
+		phone = post_body.asText.scan(/\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})/)
     date = html_body[0].asText.partition("Date:")[2][0..19] #grabs all txt after string 'Date:' then grabs 0..19 which is date and time
     post_id = html_body[0].asText.partition("PostingID")[2][0..12] #see above
 #TODO Use a regex to search a post for any and all phone numbers. Possibly drop these into a separate table with PostID as prim key
 #TODO need to add code when parsing location string to add text until we see a carrage return
     location = html_body[0].asText.partition("Location:")[2][0..5] #see above
-    #puts "Date is =>" + date + " Post id is =>" + post_id + " Locaiton is=>" + location + " Tile is =>" + title
-		puts "Phone is =>" + phone.to_s
+    puts "Date is =>" + date + " Post id is =>" + post_id + " Locaiton is=>" + location + " Tile is =>" + title
+		puts "Phone is =>" + phone.inspect
    	#puts html_body[0].asText
     #puts "Entire body is " + post_body.asText #gets body
     i+=1
