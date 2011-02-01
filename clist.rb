@@ -3,7 +3,7 @@ require 'java'
 require 'rubygems'
 require 'htmlunit.rb'
 
-	LowgFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog"); 
+	LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog"); 
 	webClient = WebClient.new(BrowserVersion::FIREFOX_3)
  	main_page = webClient.getPage("http://raleigh.craigslist.org/")
  	main_div = main_page.getElementById("sss")
