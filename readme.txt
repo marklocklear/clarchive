@@ -1,2 +1,3 @@
-#See http://htmlunit.blogspot.com/
-#http://blog.stevenlevithan.com/archives/validate-phone-number#r4-2
+See http://htmlunit.blogspot.com/
+http://blog.stevenlevithan.com/archives/validate-phone-number#r4-2
+Good regex tester for ruby @ http://www.rubyxp.com/
