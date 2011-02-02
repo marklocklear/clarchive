@@ -20,6 +20,11 @@ require 'lib/xalan-2.7.1.jar'
 require 'lib/xercesImpl-2.9.1.jar'
 require 'lib/xml-apis-1.3.04.jar'
 
+#Turn off Apache logging
+require 'commons-logging-1.1.1/commons-logging-1.1.1.jar'
+include_class 'org.apache.commons.logging.LogFactory'
+LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog") 
+
 #Web Client Class
 include_class 'com.gargoylesoftware.htmlunit.WebClient'
 include_class 'com.gargoylesoftware.htmlunit.BrowserVersion'
