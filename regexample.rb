@@ -4,8 +4,9 @@ reg = string.scan(%r`[0-9]{3}[-. ][0-9]{3}[-. ][0-9]{4}`)
 reg2 = string.scan(/\([0-9]{3}\)[0-9]{3}[-.][0-9]{4}/)
 reg4 = string.scan(/\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})/)
 url = string2.scan(/((http|https?:\/\/)+((?:[-a-z0-9]+\.)+[a-z]{2,}))/)
+url2 = string2.scan(/www.*com/)
 puts "reg 1 is " + reg.inspect
 puts "reg 2 is " + reg2.inspect
 puts "reg 4 is " + reg4.inspect
 puts "hash is " + reg4[0][1]
-puts "The url is " + url.inspect
+puts "The url is " + url2.inspect
