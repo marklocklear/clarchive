@@ -32,7 +32,7 @@ require 'htmlunit.rb'
 		puts "Tile is =>" + title
 		puts "Phone is =>" + phone.inspect
 		puts "URL is " + url.inspect
-		puts "Post is " + post_body.asText
+		puts "Post is " + post_body.asText.gsub(/\n/,'')
 		puts "*************************************************"
 		puts "*************************************************"
 		puts "*************************************************"
