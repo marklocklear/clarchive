@@ -25,14 +25,16 @@ require 'htmlunit.rb'
 #TODO Use a regex to search a post for any and all phone numbers. Possibly drop these into a separate table with PostID as prim key
 #TODO need to add code when parsing location string to add text until we see a carrage return. Possible use regex to search for
 #			text between word 'location' and carrage return => \n
-    location = html_body[0].asText.partition("Location:")[2][0..5] #see above
+    #location = html_body[0].asText.partition("Location:")[2][0..5] #see above
+    location = click_post.getByXPath("html/body/div[4]/ul/li[1]")
+		location = location[0].asText.gsub('Location: ', ' ')
     puts "Date is =>" + date
 		puts "Post id is =>" + post_id
 		puts "Locaiton is=>" + location
 		puts "Tile is =>" + title
 		puts "Phone is =>" + phone.inspect
 		puts "URL is " + url.inspect
-		puts "Post is " + post_body.asText
+		puts "Post is " + post_body.asText.gsub(/\n/,'')
 		puts "*************************************************"
 		puts "*************************************************"
 		puts "*************************************************"
