@@ -11,6 +11,5 @@ require 'htmlunit.rb'
 	urls = main_page.asXml.to_s.scan(%r`(http.*craigslist.*\.(com|uk|de|it|ca|org|in|jp|kr|ph|sg|tw|th|au|mx|za))`)
 	#urls = main_page.asXml.to_s.scan(%r`(http.*craigslist.*\.(au|uk))`)
 	for i in 0..urls.length-1 do
-	puts i.to_s + " " + urls[i].to_s
+	puts i.to_s + " " + urls[i][0]
 	end
- 	#puts urls.inspect

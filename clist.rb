@@ -5,6 +5,7 @@ require 'htmlunit.rb'
 
 	webClient = WebClient.new(BrowserVersion::FIREFOX_3)
  	main_page = webClient.getPage("http://raleigh.craigslist.org/")
+ 	#main_page = webClient.getPage("http://kolkata.craigslist.co.in")
  	main_div = main_page.getElementById("sss")
  	h4 = main_page.getByXPath(main_div.getCanonicalXPath() + "/h4/a")
  	for_sale_page = h4[0].click
@@ -22,11 +23,22 @@ require 'htmlunit.rb'
     date = html_body[0].asText.partition("Date:")[2][0..19] #grabs all txt after string 'Date:' then grabs 0..19 which is date and time
     post_id = html_body[0].asText.partition("PostingID")[2][0..12] #see above
 #TODO Use a regex to search a post for any and all phone numbers. Possibly drop these into a separate table with PostID as prim key
-#TODO need to add code when parsing location string to add text until we see a carrage return
-    location = html_body[0].asText.partition("Location:")[2][0..5] #see above
-    puts "Date is =>" + date + " Post id is =>" + post_id + " Locaiton is=>" + location + " Tile is =>" + title
+#TODO need to add code when parsing location string to add text until we see a carrage return. Possible use regex to search for
+#			text between word 'location' and carrage return => \n
+    #location = html_body[0].asText.partition("Location:")[2][0..5] #see above
+    location = click_post.getByXPath("html/body/div[4]/ul/li[1]")
+		location = location[0].asText.gsub('Location: ', ' ')
+    puts "Date is =>" + date
+		puts "Post id is =>" + post_id
+		puts "Locaiton is=>" + location
+		puts "Tile is =>" + title
 		puts "Phone is =>" + phone.inspect
 		puts "URL is " + url.inspect
+		puts "Post is " + post_body.asText.gsub(/\n/,'')
+		puts "*************************************************"
+		puts "*************************************************"
+		puts "*************************************************"
+		puts "*************************************************"
    	#puts html_body[0].asText
     #puts post_body.asText #gets body
     i+=1
