@@ -2,15 +2,27 @@
 require 'java'
 require 'rubygems'
 require 'htmlunit.rb'
-
+def get_sites
+	$sites = Array.new
 	webClient = WebClient.new(BrowserVersion::FIREFOX_3)
- 	main_page = webClient.getPage("http://raleigh.craigslist.org/")
+ 	main_page = webClient.getPage("http://www.craigslist.org/about/sites")
+	urls = main_page.asXml.to_s.scan(%r`(http.*craigslist.*\.(com|uk|de|it|ca|org|in|jp|kr|ph|sg|tw|th|au|mx|za))`)
+	for i in 0..urls.length-1 do
+		$sites[i] = urls[i][0]
+	end
+end
+	get_sites()
+j = 0
+while j < 100
+	webClient = WebClient.new(BrowserVersion::FIREFOX_3)
+ 	#main_page = webClient.getPage("http://raleigh.craigslist.org/")
+ 	main_page = webClient.getPage($sites[j])
  	#main_page = webClient.getPage("http://kolkata.craigslist.co.in")
  	main_div = main_page.getElementById("sss")
  	h4 = main_page.getByXPath(main_div.getCanonicalXPath() + "/h4/a")
  	for_sale_page = h4[0].click
  	i=1
- 	while i < 99
+ 	while i < 9
     post = for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")
 		if post[0]
     	click_post = post[0].click
@@ -42,13 +54,16 @@ require 'htmlunit.rb'
 			#location = location_second_attempt[0].asText.gsub('Location: ', ' ')
 			location = "Location not found"
 		end
+		puts "In site: " + $sites[j]
     puts "Date is =>" + date
 		puts "Post id is =>" + post_id
 		puts "Location is=>" + location
 		puts "Tile is =>" + title
 		puts "Phone is =>" + phone.inspect
 		puts "URL is " + url.inspect
-		puts "Post is " + post_body.asText.gsub(/\n/,'')
+		if post_body
+			puts "Post is " + post_body.asText.gsub(/\n/,'')
+		end
 		puts "*************************************************"
 		puts "*************************************************"
 		puts "*************************************************"
@@ -57,3 +72,5 @@ require 'htmlunit.rb'
     #puts post_body.asText #gets body
     i+=1
   end
+j+=1
+end
