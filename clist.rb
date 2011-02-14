@@ -27,6 +27,7 @@ while j < 100
 		if post[0]
     	click_post = post[0].click
     	title = click_post.getByXPath("html/body/h2")
+    	category = click_post.getByXPath("html/body/div[1]/a[4]")
     	post_body = click_post.getElementById("userbody")
     	html_body = click_post.getByXPath("html/body")
 		end
@@ -57,6 +58,7 @@ while j < 100
 		puts "In site: " + $sites[j]
     puts "Date is =>" + date
 		puts "Post id is =>" + post_id
+		puts "Category is =>" + category[0].asText
 		puts "Location is=>" + location
 		puts "Tile is =>" + title
 		puts "Phone is =>" + phone.inspect
