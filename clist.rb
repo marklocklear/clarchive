@@ -1,6 +1,7 @@
 #Author J. Mark Locklear
 require 'java'
 require 'rubygems'
+require 'date'
 require 'htmlunit.rb'
 def get_sites
 	$sites = Array.new
@@ -11,9 +12,11 @@ def get_sites
 		$sites[i] = urls[i][0]
 	end
 end
-	get_sites()
+start_time = DateTime.now
+get_sites()
+count = 0
 j = 0
-while j < 100
+while j < 500
 	webClient = WebClient.new(BrowserVersion::FIREFOX_3)
  	#main_page = webClient.getPage("http://raleigh.craigslist.org/")
  	main_page = webClient.getPage($sites[j])
@@ -22,23 +25,25 @@ while j < 100
  	h4 = main_page.getByXPath(main_div.getCanonicalXPath() + "/h4/a")
  	for_sale_page = h4[0].click
  	i=1
- 	while i < 9
+ 	while i < 99 and i != nil
     post = for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")
-		if post[0]
+		if post[0] and post[0] != nil
     	click_post = post[0].click
     	title = click_post.getByXPath("html/body/h2")
     	category = click_post.getByXPath("html/body/div[1]/a[4]")
     	post_body = click_post.getElementById("userbody")
     	html_body = click_post.getByXPath("html/body")
 		end
-
-		#str.partition(sep) → [head, sep, tail]
-		title = title[0].asText
+		#TODO Need to handle the case of a numeric title...script fails when it trys asText method on a fixnum
+		if title[0]
+			title = title[0].asText
+		end
 		if post_body
 			phone = post_body.asText.scan(%r'\(?([0-9]{3})\)?[-.\/ ]?([0-9]{3})[-.\/ ]?([0-9]{4})')
 			url = post_body.asText.scan(/((www|http|https?:\/\/)+((?:[-a-z0-9]+\.)+[a-z]{2,}))/)
 		end
 		if html_body[0]
+		#str.partition(sep) → [head, sep, tail]
     	date = html_body[0].asText.partition("Date:")[2][0..19] #grabs all txt after string 'Date:' then grabs 0..19 which is date and time
 		end
 
@@ -58,13 +63,15 @@ while j < 100
 		puts "In site: " + $sites[j]
     puts "Date is =>" + date
 		puts "Post id is =>" + post_id
-		puts "Category is =>" + category[0].asText
+		if category[0]
+			puts "Category is =>" + category[0].asText
+		end
 		puts "Location is=>" + location
 		puts "Tile is =>" + title
 		puts "Phone is =>" + phone.inspect
-		puts "URL is " + url.inspect
+		puts "URL is =>" + url.inspect
 		if post_body
-			puts "Post is " + post_body.asText.gsub(/\n/,'')
+			puts "Post is=>" + post_body.asText.gsub(/\n/,'')
 		end
 		puts "*************************************************"
 		puts "*************************************************"
@@ -73,6 +80,11 @@ while j < 100
    	#puts html_body[0].asText
     #puts post_body.asText #gets body
     i+=1
+		count += 1
+		puts "Processed " + count.to_s + " posts."
   end
 j+=1
 end
+end_time = DateTime.now
+execution_time = (start_time - end_time).to_s
+puts "Processed " + count.to_s + " posts in " + execution_time
