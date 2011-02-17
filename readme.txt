@@ -48,3 +48,6 @@ com/gargoylesoftware/htmlunit/html/HTMLParser.java:654:in `handleCharacters': ja
 	from com/gargoylesoftware/htmlunit/html/HtmlElement.java:1177:in `click'
 	from clist.rb:28:in `(root)'
 
+Processed 41405 posts.
+clist.rb:49:in `__file__': undefined method `asText' for 80:Fixnum (NoMethodError)
+

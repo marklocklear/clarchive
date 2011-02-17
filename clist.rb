@@ -19,7 +19,11 @@ j = 0
 while j < 500
 	webClient = WebClient.new(BrowserVersion::FIREFOX_3)
  	#main_page = webClient.getPage("http://raleigh.craigslist.org/")
- 	main_page = webClient.getPage($sites[j])
+ 	begin
+ 		main_page = webClient.getPage($sites[j])
+	rescue java.net.UnknownHostException => e
+		$stderr.print "Exception caught: #{e}n\n"
+	end 
  	#main_page = webClient.getPage("http://kolkata.craigslist.co.in")
  	main_div = main_page.getElementById("sss")
  	h4 = main_page.getByXPath(main_div.getCanonicalXPath() + "/h4/a")
@@ -28,15 +32,23 @@ while j < 500
  	while i < 99 and i != nil
     post = for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")
 		if post[0] and post[0] != nil
-    	click_post = post[0].click
+			begin
+    		click_post = post[0].click
+			rescue java.lang.RuntimeException => e
+				$stderr.print "Exception caught: #{e}n\n"
+			rescue java.lang.NullPointerException => e
+        $stderr.print "Exception caught: #{e}n\n"
+			end
     	title = click_post.getByXPath("html/body/h2")
     	category = click_post.getByXPath("html/body/div[1]/a[4]")
     	post_body = click_post.getElementById("userbody")
     	html_body = click_post.getByXPath("html/body")
 		end
 		#TODO Need to handle the case of a numeric title...script fails when it trys asText method on a fixnum
-		if title[0]
+		if title[0].asText
 			title = title[0].asText
+		else
+			tile = 'Error setting title'
 		end
 		if post_body
 			phone = post_body.asText.scan(%r'\(?([0-9]{3})\)?[-.\/ ]?([0-9]{3})[-.\/ ]?([0-9]{4})')
