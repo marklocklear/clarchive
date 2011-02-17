@@ -18,18 +18,16 @@ count = 0
 j = 0
 while j < 500
 	webClient = WebClient.new(BrowserVersion::FIREFOX_3)
- 	#main_page = webClient.getPage("http://raleigh.craigslist.org/")
  	begin
  		main_page = webClient.getPage($sites[j])
 	rescue java.net.UnknownHostException => e
 		$stderr.print "Exception caught: #{e}n\n"
 	end 
- 	#main_page = webClient.getPage("http://kolkata.craigslist.co.in")
  	main_div = main_page.getElementById("sss")
  	h4 = main_page.getByXPath(main_div.getCanonicalXPath() + "/h4/a")
  	for_sale_page = h4[0].click
  	i=1
- 	while i < 99 and i != nil
+ 	while i < 99 and for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")[0] != nil
     post = for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")
 		if post[0] and post[0] != nil
 			begin
