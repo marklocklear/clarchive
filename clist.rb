@@ -43,8 +43,10 @@ while j < 500
 			tile = 'Error setting title'
 		end
 		if post_body
-			phone = post_body.asText.scan(%r'\(?([0-9]{3})\)?[-.\/ ]?([0-9]{3})[-.\/ ]?([0-9]{4})')
-			url = post_body.asText.scan(/((www|http|https?:\/\/)+((?:[-a-z0-9]+\.)+[a-z]{2,}))/)
+			#phone = post_body.asText.scan(%r'\(?([0-9]{3})\)?[-.\/ ]?([0-9]{3})[-.\/ ]?([0-9]{4})')
+			phone = post_body.asText.scan(%r`[0-9]{3}[-.\/ ][0-9]{3}[-.\/ ][0-9]{4}`)
+			#url = post_body.asText.scan(/((www|http|https?:\/\/)+((?:[-a-z0-9]+\.)+[a-z]{2,}))/)
+			url = post_body.asText.scan(%r'\b(([\w-]+://?|www|WWW[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))')
 		end
 		if html_body[0]
 		#str.partition(sep) → [head, sep, tail]
