@@ -10,7 +10,7 @@ start_time = DateTime.now
 get_sites()
 count = 0
 j = 0
-while j < 500
+while j < 50
 	webClient = WebClient.new(BrowserVersion::FIREFOX_3)
  	begin
  		main_page = webClient.getPage($sites[j])
@@ -51,21 +51,26 @@ while j < 500
 		end
 		if html_body[0]
 		#str.partition(sep) → [head, sep, tail]
-    	date = html_body[0].asText.partition("Date:")[2][0..19] #grabs all txt after string 'Date:' then grabs 0..19 which is date and time
+    	#date = html_body[0].asText.partition("Date:")[2][0..17] #grabs all txt after string 'Date:' then grabs 0..19 which is date and time
+    	date = html_body[0].asText.partition("Date:")[2][0..19].gsub(/[APMCEKST ]/, '')
+    	post_id = html_body[0].asText.partition("PostingID")[2][2..12] #see above
 		end
 
-    post_id = html_body[0].asText.partition("PostingID")[2][0..12] #see above
 #TODO Use a regex to search a post for any and all phone numbers. Possibly drop these into a separate table with PostID as prim key
 #TODO need to add code when parsing location string to add text until we see a carrage return. Possible use regex to search for
 #			text between word 'location' and carrage return => \n
     #location = html_body[0].asText.partition("Location:")[2][0..5] #see above
     #What ended up doing below is grabbing the location from xpath instead of trying to parse it out of the post body
     location_first_attempt = click_post.getByXPath("html/body/div[4]/ul/li[1]")
-    location_second_attempt = click_post.getByXPath("html/body/ul[1]/li[1]")
-		if location_first_attempt[0]
+    #location_second_attempt = click_post.getByXPath("html/body/ul[1]/li[1]")
+		#if location_first_attempt[0] and location_first_attempt[0] != /^its NOT ok/
+		if location_first_attempt[0] and location_first_attempt[0] != /^it's NOT ok/
 			#TODO Need to combine these next two statements
 			location = location_first_attempt[0].asText.gsub('Location: ', '') #Why the gsub??? Removes literal text location and apostrophes
 			location = location.gsub(/'/, '')
+		#elsif location_second_attempt[0] and location_second_attempt[0] != /^its NOT ok/
+		#	location = location_second_attempt[0].asText.gsub('Location: ', '')
+     # location = location.gsub(/'/, '')
 		else
 			#location = location_second_attempt[0].asText.gsub('Location: ', ' ')
 			location = "Location not found"
@@ -84,7 +89,7 @@ while j < 500
 			body = post_body.asText.gsub(/[\n']/,'')
 			puts "Post is=>" + body
 		end
-    statement = "insert into post3 values(null, '#{post_id}', '#{location}', '#{title}', '#{body}');"
+    statement = "insert into post6 values('#{date}', '#{post_id}', '#{location}', '#{title}', '#{body}');"
     puts statement;
     query(statement)
 		puts "*************************************************"
