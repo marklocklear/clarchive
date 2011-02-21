@@ -3,15 +3,8 @@ require 'java'
 require 'rubygems'
 require 'date'
 require 'htmlunit.rb'
-def get_sites
-	$sites = Array.new
-	webClient = WebClient.new(BrowserVersion::FIREFOX_3)
- 	main_page = webClient.getPage("http://www.craigslist.org/about/sites")
-	urls = main_page.asXml.to_s.scan(%r`(http.*craigslist.*\.(com|uk|de|it|ca|org|in|jp|kr|ph|sg|tw|th|au|mx|za))`)
-	for i in 0..urls.length-1 do
-		$sites[i] = urls[i][0]
-	end
-end
+require 'clist_helper.rb'
+
 start_time = DateTime.now
 get_sites()
 count = 0
@@ -27,6 +20,7 @@ while j < 500
  	h4 = main_page.getByXPath(main_div.getCanonicalXPath() + "/h4/a")
  	for_sale_page = h4[0].click
  	i=1
+	#TODO This conditional is a little silly. Will eventually drop the 99 posts and do conditional on exsistance of posts
  	while i < 99 and for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")[0] != nil
     post = for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")
 		if post[0] and post[0] != nil
@@ -34,8 +28,8 @@ while j < 500
     		click_post = post[0].click
 			rescue java.lang.RuntimeException => e
 				$stderr.print "Exception caught: #{e}n\n"
-			rescue java.lang.NullPointerException => e
-        $stderr.print "Exception caught: #{e}n\n"
+			#rescue java.lang.NullPointerException => e
+       # $stderr.print "Exception caught: #{e}n\n"
 			end
     	title = click_post.getByXPath("html/body/h2")
     	category = click_post.getByXPath("html/body/div[1]/a[4]")
