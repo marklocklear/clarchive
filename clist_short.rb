@@ -3,6 +3,7 @@ require 'java'
 require 'rubygems'
 require 'date'
 require 'htmlunit.rb'
+require 'mysql_helper'
 
 	webClient = WebClient.new(BrowserVersion::FIREFOX_3)
  	main_page = webClient.getPage("http://hat.craigslist.org/")
@@ -10,7 +11,7 @@ require 'htmlunit.rb'
  	h4 = main_page.getByXPath(main_div.getCanonicalXPath() + "/h4/a")
  	for_sale_page = h4[0].click
  	i=1
- 	while i < 99 and for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")[0] != nil
+ 	while i < 9 and for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")[0] != nil
     post = for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")
 		puts post[0].asXml
 		if post[0] and post[0] != nil
@@ -58,8 +59,13 @@ require 'htmlunit.rb'
 		puts "Phone is =>" + phone.inspect
 		puts "URL is =>" + url.inspect
 		if post_body
-			puts "Post is=>" + post_body.asText.gsub(/\n/,'')
+			body = post_body.asText.gsub(/[\n']/,'')
+			#body = post_body.asText.gsub(/'/,'')
+			puts "Post is=>" + body 
 		end
+		statement = "insert into post3 values(null, '#{post_id}', '#{location}', '#{title}', '#{body}');"
+		puts statement;
+		query(statement)
 		puts "*************************************************"
 		puts "*************************************************"
 		puts "*************************************************"

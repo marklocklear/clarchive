@@ -4,6 +4,7 @@ require 'rubygems'
 require 'date'
 require 'htmlunit.rb'
 require 'clist_helper.rb'
+require 'mysql_helper.rb'
 
 start_time = DateTime.now
 get_sites()
@@ -38,7 +39,7 @@ while j < 500
 		end
 		#TODO Need to handle the case of a numeric title...script fails when it trys asText method on a fixnum
 		if title[0].asText
-			title = title[0].asText
+			title = title[0].asText.gsub(/'/, '')
 		else
 			tile = 'Error setting title'
 		end
@@ -62,7 +63,9 @@ while j < 500
     location_first_attempt = click_post.getByXPath("html/body/div[4]/ul/li[1]")
     location_second_attempt = click_post.getByXPath("html/body/ul[1]/li[1]")
 		if location_first_attempt[0]
-			location = location_first_attempt[0].asText.gsub('Location: ', ' ') #Why the gsub???
+			#TODO Need to combine these next two statements
+			location = location_first_attempt[0].asText.gsub('Location: ', '') #Why the gsub??? Removes literal text location and apostrophes
+			location = location.gsub(/'/, '')
 		else
 			#location = location_second_attempt[0].asText.gsub('Location: ', ' ')
 			location = "Location not found"
@@ -78,8 +81,12 @@ while j < 500
 		puts "Phone is =>" + phone.inspect
 		puts "URL is =>" + url.inspect
 		if post_body
-			puts "Post is=>" + post_body.asText.gsub(/\n/,'')
+			body = post_body.asText.gsub(/[\n']/,'')
+			puts "Post is=>" + body
 		end
+    statement = "insert into post3 values(null, '#{post_id}', '#{location}', '#{title}', '#{body}');"
+    puts statement;
+    query(statement)
 		puts "*************************************************"
 		puts "*************************************************"
 		puts "*************************************************"
