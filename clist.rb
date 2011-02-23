@@ -76,8 +76,16 @@ while j < 50
 			location = "Location not found"
 		end
 		puts "In site: " + $sites[j]
-    puts "Date is =>" + date
-		puts "Post id is =>" + post_id
+		if date != ''
+    	puts "Date is =>" + date
+		else
+			date = '0000-00-00,00:00'
+		end
+		if post_id
+			puts "Post id is =>" + post_id
+		else
+			puts "Can't get post id"
+		end
 		if category[0]
 			puts "Category is =>" + category[0].asText
 		end
@@ -89,7 +97,7 @@ while j < 50
 			body = post_body.asText.gsub(/[\n']/,'')
 			puts "Post is=>" + body
 		end
-    statement = "insert into post6 values('#{date}', '#{post_id}', '#{location}', '#{title}', '#{body}');"
+    statement = "insert into post5 values('#{date}', '#{post_id}', '#{location}', '#{title}', '#{body}');"
     puts statement;
     query(statement)
 		puts "*************************************************"
