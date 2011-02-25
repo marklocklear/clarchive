@@ -83,4 +83,10 @@ URL is =>[]
 Post is=>Contact us by phone: 866-492-1272 Our asking price is $11,998*Stock num: 2842UVIN: 3GNCA23B49S633889Engine: 4-Cyl 2.2 LiterTransmission: Automatic 4-Spd w/OverdriveMiles: 42934This vehicle features: Power Steering, StabiliTrak, Cruise Control, Power Seat, Alloy Wheels, Cassette, Power Windows, FWD, Air Conditioning, AM/FM Stereo, Tilt Wheel, Power Door Locks, MP3 (Single Disc), Dual Air Bags, LT, OnStar, Traction ControlWhat a fine car. It would look perfect in your driveway. Extended warranties are often available, and at a great price. Our Internet department handles all craigslist ads. Be sure to ask for the Internet department. Contact DealerWinner Chevrolet866-492-1272 *All advertised prices exclude taxes and government fees, any finance charges, and dealer document preparation charge, and any emission testing charge. 81f269d6f5a0 02008017 ad575ef5d34d0643 Location: Colfaxits NOT ok to contact this poster with services or other commercial interests		
 insert into post7 values('2011-02-23,8:51', '2230186803
 ', 'Colfax', '2009 Chevrolet HHR LT Sport Wagon 4D - $11998 (Colfax)', 'Contact us by phone: 866-492-1272 Our asking price is $11,998*Stock num: 2842UVIN: 3GNCA23B49S633889Engine: 4-Cyl 2.2 LiterTransmission: Automatic 4-Spd w/OverdriveMiles: 42934This vehicle features: Power Steering, StabiliTrak, Cruise Control, Power Seat, Alloy Wheels, Cassette, Power Windows, FWD, Air Conditioning, AM/FM Stereo, Tilt Wheel, Power Door Locks, MP3 (Single Disc), Dual Air Bags, LT, OnStar, Traction ControlWhat a fine car. It would look perfect in your driveway. Extended warranties are often available, and at a great price. Our Internet department handles all craigslist ads. Be sure to ask for the Internet department. Contact DealerWinner Chevrolet866-492-1272 *All advertised prices exclude taxes and government fees, any finance charges, and dealer document preparation charge, and any emission testing charge. 81f269d6f5a0 02008017 ad575ef5d34d0643 Location: Colfaxits NOT ok to contact this poster with services or other commercial interests');
-
+Processed 1344 posts.
+In site: http://flagstaff.craigslist.org
+Date is =>2011-02-23,6:27
+Post id is =>2229835179
+Category is =>bicycles
+Location is=>pick up in Sedona
+Tile is =>Mountain Bike-"SCOTT SCALE 50" - $300 (pick up in Sedona)

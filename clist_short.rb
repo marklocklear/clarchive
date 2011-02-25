@@ -28,7 +28,7 @@ require 'mysql_helper'
     	html_body = click_post.getByXPath("html/body")
 		end
 		if title[0] and title[0] != nil
-			title = title[0].asText
+			title = title[0].asText.gsub(/'/, '')
 		else
 			title = 'Error setting title'
 		end
@@ -37,14 +37,14 @@ require 'mysql_helper'
 			url = post_body.asText.scan(/((www|http|https?:\/\/)+((?:[-a-z0-9]+\.)+[a-z]{2,}))/)
 		end
 		if html_body[0]
-    	date = html_body[0].asText.partition("Date:")[2][0..20].gsub(/[APMMST]/, '')
+    	date = html_body[0].asText.partition("Date:")[2][0..19].gsub(/[APMCEKST ]/, '')
+   		post_id = html_body[0].asText.partition("PostingID")[2][2..12] #see above
 		end
-
-    post_id = html_body[0].asText.partition("PostingID")[2][0..12] #see above
     location_first_attempt = click_post.getByXPath("html/body/div[4]/ul/li[1]")
     location_second_attempt = click_post.getByXPath("html/body/ul[1]/li[1]")
 		if location_first_attempt[0]
 			location = location_first_attempt[0].asText.gsub('Location: ', ' ') #Why the gsub???
+			location = location.gsub(/'/, '')
 		else
 			#location = location_second_attempt[0].asText.gsub('Location: ', ' ')
 			location = "Location not found"
@@ -63,7 +63,7 @@ require 'mysql_helper'
 			#body = post_body.asText.gsub(/'/,'')
 			puts "Post is=>" + body 
 		end
-		statement = "insert into post3 values(null, '#{post_id}', '#{location}', '#{title}', '#{body}');"
+		statement = "insert into post2 values(null, '#{post_id}', '#{location}', '#{title}', '#{body}');"
 		puts statement;
 		query(statement)
 		puts "*************************************************"
