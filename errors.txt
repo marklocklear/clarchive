@@ -53,3 +53,11 @@ com/gargoylesoftware/htmlunit/WebClient.java:531:in `throwFailingHttpStatusCodeE
 	from com/gargoylesoftware/htmlunit/html/HtmlElement.java:1177:in `click'
 	from clist.rb:31:in `(root)'
 
+Processed 1344 posts.
+In site: http://flagstaff.craigslist.org
+Date is =>2011-02-23,6:27
+Post id is =>2229835179
+Category is =>bicycles
+Location is=>pick up in Sedona
+Tile is =>Mountain Bike-"SCOTT SCALE 50" - $300 (pick up in Sedona)
+

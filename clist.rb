@@ -10,7 +10,7 @@ start_time = DateTime.now
 get_sites()
 count = 0
 j = 0
-while j < 50
+while j < 500
 	webClient = WebClient.new(BrowserVersion::FIREFOX_3)
  	begin
  		main_page = webClient.getPage($sites[j])
@@ -97,7 +97,7 @@ while j < 50
 			body = post_body.asText.gsub(/[\n']/,'')
 			puts "Post is=>" + body
 		end
-    statement = "insert into post5 values('#{date}', '#{post_id}', '#{location}', '#{title}', '#{body}');"
+    statement = "insert into post7 values('#{date}', '#{post_id}', '#{location}', '#{title}', '#{body}');"
     puts statement;
     query(statement)
 		puts "*************************************************"
