@@ -97,7 +97,7 @@ while j < 50
 			body = post_body.asText.gsub(/[\n']/,'')
 			puts "Post is=>" + body
 		end
-    statement = "insert into post5 values('#{date}', '#{post_id}', '#{location}', '#{title}', '#{body}');"
+    statement = "insert into post7 values('#{date}', '#{post_id}', '#{location}', '#{title}', '#{body}');"
     puts statement;
     query(statement)
 		puts "*************************************************"

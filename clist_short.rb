@@ -6,12 +6,12 @@ require 'htmlunit.rb'
 require 'mysql_helper'
 
 	webClient = WebClient.new(BrowserVersion::FIREFOX_3)
- 	main_page = webClient.getPage("http://hat.craigslist.org/")
+ 	main_page = webClient.getPage("http://anchorage.craigslist.org/")
  	main_div = main_page.getElementById("sss")
  	h4 = main_page.getByXPath(main_div.getCanonicalXPath() + "/h4/a")
  	for_sale_page = h4[0].click
  	i=1
- 	while i < 9 and for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")[0] != nil
+ 	while i < 98 and for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")[0] != nil
     post = for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")
 		puts post[0].asXml
 		if post[0] and post[0] != nil
@@ -37,7 +37,7 @@ require 'mysql_helper'
 			url = post_body.asText.scan(/((www|http|https?:\/\/)+((?:[-a-z0-9]+\.)+[a-z]{2,}))/)
 		end
 		if html_body[0]
-    	date = html_body[0].asText.partition("Date:")[2][0..19]
+    	date = html_body[0].asText.partition("Date:")[2][0..20].gsub(/[APMMST]/, '')
 		end
 
     post_id = html_body[0].asText.partition("PostingID")[2][0..12] #see above
