@@ -7,14 +7,21 @@ require 'clist_helper.rb'
 require 'mysql_helper.rb'
 
 webClient = WebClient.new(BrowserVersion::FIREFOX_3)
-get_sites()
 
 start_time = DateTime.now
+get_sites()
 count = 0
 j = 0
 
 while j < 500
-	for_sale_page = get_for_sale_pages(j)
+ 	begin
+ 		main_page = webClient.getPage($sites[j])
+	rescue java.net.UnknownHostException => e
+		$stderr.print "Exception caught: #{e}n\n"
+	end 
+ 	main_div = main_page.getElementById("sss")
+ 	h4 = main_page.getByXPath(main_div.getCanonicalXPath() + "/h4/a")
+ 	for_sale_page = h4[0].click
  	i=1
 	#TODO This conditional is a little silly. Will eventually drop the 99 posts and do conditional on exsistance of posts
  	while i < 99 and for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")[0] != nil
@@ -32,26 +39,42 @@ while j < 500
     	post_body = click_post.getElementById("userbody")
     	html_body = click_post.getByXPath("html/body")
 		end
+		#TODO Need to handle the case of a numeric title...script fails when it trys asText method on a fixnum
 		if title[0].asText
 			title = title[0].asText.gsub(/'/, '')
 		else
-			tile = 'Error setting title' #needed to add this condition asText method was failing if title was numberic
+			tile = 'Error setting title'
 		end
 		if post_body
+			#phone = post_body.asText.scan(%r'\(?([0-9]{3})\)?[-.\/ ]?([0-9]{3})[-.\/ ]?([0-9]{4})')
 			phone = post_body.asText.scan(%r`[0-9]{3}[-.\/ ][0-9]{3}[-.\/ ][0-9]{4}`)
+			#url = post_body.asText.scan(/((www|http|https?:\/\/)+((?:[-a-z0-9]+\.)+[a-z]{2,}))/)
 			url = post_body.asText.scan(%r'\b(([\w-]+://?|www|WWW[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))')
 		end
 		if html_body[0]
-    	date = html_body[0].asText.partition("Date:")[2][0..19].gsub(/[APMCEKST ]/, '') #str.partition(sep) → [head, sep, tail]
+		#str.partition(sep) → [head, sep, tail]
+    	#date = html_body[0].asText.partition("Date:")[2][0..17] #grabs all txt after string 'Date:' then grabs 0..19 which is date and time
+    	date = html_body[0].asText.partition("Date:")[2][0..19].gsub(/[APMCEKST ]/, '')
     	post_id = html_body[0].asText.partition("PostingID")[2][2..12] #see above
 		end
 
+#TODO Use a regex to search a post for any and all phone numbers. Possibly drop these into a separate table with PostID as prim key
+#TODO need to add code when parsing location string to add text until we see a carrage return. Possible use regex to search for
+#			text between word 'location' and carrage return => \n
+    #location = html_body[0].asText.partition("Location:")[2][0..5] #see above
+    #What ended up doing below is grabbing the location from xpath instead of trying to parse it out of the post body
     location_first_attempt = click_post.getByXPath("html/body/div[4]/ul/li[1]")
+    #location_second_attempt = click_post.getByXPath("html/body/ul[1]/li[1]")
+		#if location_first_attempt[0] and location_first_attempt[0] != /^its NOT ok/
 		if location_first_attempt[0] and location_first_attempt[0] != /^it's NOT ok/
 			#TODO Need to combine these next two statements
-			location = location_first_attempt[0].asText.gsub('Location: ', '') 
+			location = location_first_attempt[0].asText.gsub('Location: ', '') #Why the gsub??? Removes literal text location and apostrophes
 			location = location.gsub(/'/, '')
+		#elsif location_second_attempt[0] and location_second_attempt[0] != /^its NOT ok/
+		#	location = location_second_attempt[0].asText.gsub('Location: ', '')
+     # location = location.gsub(/'/, '')
 		else
+			#location = location_second_attempt[0].asText.gsub('Location: ', ' ')
 			location = "Location not found"
 		end
 		puts "In site: " + $sites[j]
@@ -81,6 +104,10 @@ while j < 500
     query(statement)
 		puts "*************************************************"
 		puts "*************************************************"
+		puts "*************************************************"
+		puts "*************************************************"
+   	#puts html_body[0].asText
+    #puts post_body.asText #gets body
     i+=1
 		count += 1
 		puts "Processed " + count.to_s + " posts."

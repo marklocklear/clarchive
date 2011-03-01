@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'java'
-require "dbi"
-require 'dbd-jdbc'
+require 'mysql_helper.rb'
 require 'htmlunit.rb'
 
 
