@@ -7,14 +7,14 @@ require 'clist_helper.rb'
 require 'mysql_helper.rb'
 
 webClient = WebClient.new(BrowserVersion::FIREFOX_3)
-get_sites()
+get_sites() #see helper file
 
 start_time = DateTime.now
 count = 0
 j = 0
 
 while j < 500
-	for_sale_page = get_for_sale_pages(j)
+	for_sale_page = get_for_sale_pages(j) #see helper file
  	i=1
 	#TODO This conditional is a little silly. Will eventually drop the 99 posts and do conditional on exsistance of posts
  	while i < 99 and for_sale_page.getByXPath("html/body/blockquote[2]/p[#{i}]/a")[0] != nil
